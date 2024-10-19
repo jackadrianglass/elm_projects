@@ -1,82 +1,69 @@
-module Main exposing (..)
+module Main exposing (main)
 
-import Css
-import Css.Global
-import Html.Styled as Html
-import Html.Styled.Attributes as Attr
-import Tailwind.Breakpoints as Breakpoints
-import Tailwind.Utilities as Tw
+import Element exposing (..)
+import Element.Background as Background
+import Element.Font as Font
 
 
-ferris =
-  Html.img
-      [ Attr.src "../assets/cuddlyferris.png"
-      , Attr.css
-        [ Tw.h_auto
-        , Tw.w_full
-        , Tw.bg_white
-        , Tw.rounded_full
-        , Tw.border_black
-        , Tw.border_4
-        ]
-      ] [ Html.text "Photo not found" ]
+fillerParagraph : String
+fillerParagraph =
+    "Lorem ipsum odor amet, consectetuer adipiscing elit. Augue quam cubilia class varius morbi luctus faucibus. Pharetra nisi phasellus duis maximus ex vel sed quis aptent. Sagittis elementum gravida libero aptent dui consequat efficitur per imperdiet. Pharetra auctor mus suspendisse turpis, sem ad ad. Fusce iaculis placerat libero risus ac class potenti integer. Turpis dignissim purus efficitur habitant ad quam placerat. Nascetur nec cubilia hac himenaeos curabitur mi. Bibendum rutrum blandit neque ligula primis dictum dignissim pellentesque!"
+
+
+
+-- todo: Get the light version as well https://rosepinetheme.com/palette/ingredients/
+
+
+theme =
+    { base = rgb255 25 23 36
+    , surface = rgb255 31 29 46
+    , overlay = rgb255 38 35 58
+    , muted = rgb255 110 106 134
+    , subtle = rgb255 144 140 170
+    , text = rgb255 224 222 244
+    , love = rgb255 235 111 146
+    , gold = rgb255 246 193 119
+    , rose = rgb255 235 188 186
+    , pine = rgb255 49 116 143
+    , foam = rgb255 156 207 216
+    , iris = rgb255 196 167 231
+    , highlightLow = rgb255 33 32 46
+    , highlightMed = rgb255 64 61 82
+    , highlightHigh = rgb255 82 79 103
+    }
+
 
 main =
-  Html.toUnstyled <|
-    Html.div
-    [ Attr.css
-      [ Tw.bg_blue_600
-      , Tw.rounded_lg
-      ]
-    ]
-    [ Html.div []
-      [ ferris
-      ]
-    ]
-    
+    layout
+        -- todo: This is where you put your style options
+        -- see what else you can do with this
+        [ Font.color theme.text
+        , Font.size 18
+        , Font.family
+            [ Font.typeface "Open Sans"
+            , Font.sansSerif
+            ]
+        , Background.color theme.base
+        ]
+    <|
+        -- todo: have a title bar somewhere here
+        -- todo: have a splash screen with your link tree
+        row []
+            [ el [ width <| fillPortion 1 ] none
+            , content
+            , el [ width <| fillPortion 1 ] none
+            ]
 
 
-{-
-The Plan:
-The idea is to largely base the website off of one that I found
-[here](http://www.pascalvangemert.nl)
-
-So the front page is an interactive resume that has the following layout
-1. Hamburger menu for navigation into other pages (later)
-2. Main photo for the landing of the website
-  * Should occupy the whole screen
-3. Have a brief on yourself
-  * Basics i.e. name, age, location
-  * A tl;dr about me
-  * A photo
-4. Work Experience
-  * Super basic listing of what your work experience is
-  * Super basic listing of what your schooling is
-  * Maybe add a cool quote that you enjoy
-5. Skill list
-  * Have a list of skills in a 5 star ranking
-  * Add some animations when hovering over the stars
-  * Add tooltips to have an explanation for each skill and link projects if applicable
-  * Include the following sections
-    * Languages
-    * Tools
-    * Frameworks/Libraries
-    * Paradigms and Philosophies
-6. Projects
-  * A list of side projects
-  * Make sure that the complete ones come first
-  * Tool tips for adding details about
-    * Language used
-    * Libraries used
-    * Subject matter that it focuses on
-    * Completion status
-7. Contact information
-  * email
-  * linkedin
-8. Have a sections navbar floating on the right
-  * have it appear like a scroll bar
-  * expands when hovering over it
-  * Have smooth scrolling when navigating to various part of the resume
-  * Have it expanded when at the top of the page
--}
-    
+content : Element a
+content =
+    textColumn
+        [ width <| fillPortion 5
+        , height fill
+        , spacing 10
+        , paddingXY 100 0
+        ]
+    <|
+        List.repeat
+            20
+            (paragraph [] [ text fillerParagraph ])

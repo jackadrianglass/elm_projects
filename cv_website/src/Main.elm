@@ -3,6 +3,9 @@ module Main exposing (main)
 import Element exposing (..)
 import Element.Background as Background
 import Element.Font as Font
+import FeatherIcons as Icons
+import Html exposing (Html)
+import Html.Attributes exposing (style)
 
 
 fillerParagraph : String
@@ -15,6 +18,7 @@ fillerParagraph =
 
 
 theme =
+    -- todo: How do I get fonts to be scaled appropriately for headings and content
     { base = rgb255 25 23 36
     , surface = rgb255 31 29 46
     , overlay = rgb255 38 35 58
@@ -33,10 +37,37 @@ theme =
     }
 
 
+linkTreeIcon : Icons.Icon -> String -> Element msg
+linkTreeIcon icon url =
+    -- todo: make this a link thingy (elm-ui literally has a link to do this https://package.elm-lang.org/packages/mdgriffith/elm-ui/latest/Element#link)
+    link []
+        { url = url
+        , label =
+            icon
+                |> Icons.withSize 30
+                |> Icons.toHtml []
+                |> html
+        }
+
+
+h1 : List (Attr () msg) -> String -> Element msg
+h1 attributes content =
+    el (attributes ++ [ Font.size 60, Font.heavy ]) (text content)
+
+
+splashScreen : Attribute msg
+splashScreen =
+    -- todo: Make this the animation rather than an image
+    -- some ideas could be any of the simple canvas examples from the coding train. Could have it cycle on a timer or on page load
+    behindContent <| el [ height fill, width fill ] <| image [ height fill, centerX ] { src = "https://cdn-icons-png.flaticon.com/512/6482/6482627.png", description = "" }
+
+
+main : Html msg
 main =
     layout
         -- todo: This is where you put your style options
         -- see what else you can do with this
+        -- todo: Add a switch from light mode to dark mode
         [ Font.color theme.text
         , Font.size 18
         , Font.family
@@ -46,24 +77,18 @@ main =
         , Background.color theme.base
         ]
     <|
-        -- todo: have a title bar somewhere here
-        -- todo: have a splash screen with your link tree
-        row []
-            [ el [ width <| fillPortion 1 ] none
-            , content
-            , el [ width <| fillPortion 1 ] none
+        column [ width fill, spacing 30 ]
+            [ el [ width fill, htmlAttribute <| style "min-height" "100vh", splashScreen ] <|
+                column [ centerX, centerY, padding 5, spacing 5 ]
+                    [ h1 [ centerX, Font.color theme.pine ] "Banana"
+                    , h1 [ centerX, Font.color theme.pine ] "Split"
+                    , row [ centerX ]
+                        [ linkTreeIcon Icons.github "https://github.com/jackadrianglass"
+                        , linkTreeIcon Icons.linkedin "https://www.linkedin.com/in/jack-glass-561944129/"
+                        -- todo: do something different with the email
+                        , linkTreeIcon Icons.mail "jackadrianglass@gmail.com"
+                        ]
+                    ]
+            , h1 [ centerX, Font.center ] "more icecream please!"
+            , textColumn [ centerX ] <| List.repeat 10 (paragraph [] [ text fillerParagraph ])
             ]
-
-
-content : Element a
-content =
-    textColumn
-        [ width <| fillPortion 5
-        , height fill
-        , spacing 10
-        , paddingXY 100 0
-        ]
-    <|
-        List.repeat
-            20
-            (paragraph [] [ text fillerParagraph ])

@@ -39,7 +39,6 @@ theme =
 
 linkTreeIcon : Icons.Icon -> String -> Element msg
 linkTreeIcon icon url =
-    -- todo: make this a link thingy (elm-ui literally has a link to do this https://package.elm-lang.org/packages/mdgriffith/elm-ui/latest/Element#link)
     link []
         { url = url
         , label =
